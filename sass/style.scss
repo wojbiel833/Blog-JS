@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald:400,600|Sacramento|Source+Sans+Pro:300&subset=latin-ext');
+
+/* Variables */
+
+$color-light: #00adb3;
+$color-dark: #020202;
+
+$font-logo: 'Sacramento', cursive;
+$font-header: 'Oswald', sans-serif;
+$font-text: 'Source Sans Pro', sans-serif;
+
+/* Global */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: $color-light;
+  font-family: $font-text;
+  color: $color-dark;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 22px;
+  text-transform: uppercase;
+  font-family: $font-header;
+  font-weight: 600;
+  span {
+    text-transform: none;
+    font-weight: 400;
+    color: lighten($color-dark, 20%);
+  }
+}
+
+/* Layout */
+
+.wrapper {
+  display: flex;
+  margin-left: 10px;
+  margin-bottom: 100px;
+}
+
+.sidebar {
+  flex: 1 0 0;
+}
+
+.posts {
+  flex: 2 0 0;
+}
+
+.sidebar,
+.posts {
+  background: $color-light;
+  margin-right: 10px;
+  padding: 40px;
+  border: 1px solid $color-dark;
+  border-radius: 5px;
+}
+
+/* Logo */
+
+.splash {
+  background-image: url('https://i.ibb.co/DLJfKWZ/pexels-maddy-zen-957201.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 70vh;
+  width: 100%;
+  margin: 0 0 50px 0;
+  .logo {
+    position: absolute;
+    font-weight: 400;
+    font-family: $font-logo;
+    font-size: 104px;
+    line-height: 1;
+    text-align: center;
+    height: 200px;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -25%);
+  }
+}
+
+/* Lists */
+
+.list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  .active {
+    font-weight: bold;
+  }
+  li {
+    margin-right: 5px;
+  }
+}
+
+.list-horizontal {
+  li {
+    display: inline-block;
+  }
+}
+
+/* Authors */
+
+.authors {
+  li {
+    margin-bottom: 12px;
+  }
+}
+
+/* Post */
+
+.post {
+  display: none;
+  &.active {
+    display: block;
+  }
+}
+.posts {
+  .post-content {
+    margin-top: 30px;
+  }
+}
+.post-author {
+  font-style: italic;
+}
+
+.post-tags {
+  display: flex;
+  p {
+    margin: 0 10px 0 0;
+  }
+}
+.animated-example {
+  margin: 20px auto;
+  width: 300px;
+}
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeInDown {
+  animation-name: fadeInDown;
+}
+/* Media */
+
+@media (max-width: 450px) {
+  .splash {
+    .logo {
+      font-size: 80px;
+    }
+  }
+  .wrapper {
+    display: block;
+  }
+  .sidebar {
+    text-align: center;
+  }
+}
+@media (min-width: 450px) and (max-width: 991px) {
+  .splash {
+    .logo {
+      font-size: 120px;
+    }
+  }
+  .wrapper {
+    display: block;
+  }
+  .sidebar {
+    text-align: center;
+  }
+}
