@@ -142,6 +142,10 @@ body {
   p {
     margin: 0 10px 0 0;
   }
+  li {
+    list-style: none;
+    margin-left: 8px;
+  }
 }
 .animated-example {
   margin: 20px auto;
