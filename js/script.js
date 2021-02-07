@@ -8,76 +8,52 @@
 const titleClickHandler = function (event) {
   event.preventDefault();
   const clickedElement = this;
-
   /* [DONE] remove class 'active' from all article links  */
-
   const activeLinks = document.querySelectorAll('.titles a.active');
 
   for (let activeLink of activeLinks) {
     activeLink.classList.remove('active');
   }
-
   /* [DONE] add class 'active' to the clicked link */
-
   clickedElement.classList.add('active');
-
   /* [DONE] remove class 'active' from all articles */
-
   const activeArticles = document.querySelectorAll('.posts .post.active');
 
   for (let activeArticle of activeArticles) {
     activeArticle.classList.remove('active');
   }
-
   /* [DONE] get 'href' attribute from the clicked link */
-
   const articleSelector = clickedElement.getAttribute('href');
-
   /* [DONE] find the correct article using the selector (value of 'href' attribute) */
-
   const targetArticle = document.querySelector(articleSelector);
-
   /* [DONE] add class 'active' to the correct article */
-
   targetArticle.classList.add('active');
 };
 // MOJA FUNKCJA
 
 function generateTitleLinks(customSelector = '') {
   // remove contents of titleList
-
   const titleList = document.querySelector('.titles');
   titleList.innerHTML = '';
-
   // for each article
-
   const articles = document.querySelectorAll('.post' + customSelector);
-
+  // console.log(articles);
   for (let article of articles) {
     // get the article id
-
     const articleId = article.getAttribute('id');
-
     // find the title element
-
     const articleTitle = article.querySelector('.post-title').innerHTML;
-
     // get the title from the title element
-
     const linkHTML =
       '<li><a href="#' +
       articleId +
       '"><span>' +
       articleTitle +
       '</span></a></li>';
-
     // create HTML of the link
-
     titleList.insertAdjacentHTML('beforeend', linkHTML);
   }
-
   const links = document.querySelectorAll('.titles a');
-
   for (let link of links) {
     link.addEventListener('click', titleClickHandler);
   }
@@ -122,10 +98,9 @@ generateTags();
 
 function tagClickHandler(event) {
   /* prevent default action for this event */
-  console.log('KLIKNĄŁEŚ');
+  // console.log('KLIKNĄŁEŚ');
   event.preventDefault();
   /* make new constant named "clickedElement" and give it the value of "this" */
-
   /* make a new constant "href" and read the attribute "href" of the clicked element */
   const href = this.getAttribute('href');
   // console.log(href);
@@ -144,7 +119,6 @@ function tagClickHandler(event) {
   //   active.classList.remove('active');
   //   /* END LOOP: for each active tag link */
   // }
-
   // /* find all tag links with "href" attribute equal to the "href" constant */
   // const similarTags = document.querySelectorAll(href);
   // console.log(similarTags);
@@ -165,7 +139,7 @@ function addClickListenersToTags() {
   const tagsSelector = document.querySelectorAll('.post-tags [href^="#tag-"]');
   /* START LOOP: for each link */
   for (const tag of tagsSelector) {
-    /* add tagClickHandler as event listener for that link */
+    /* add tagClickHandler as event listener for that link*/
     // console.log(tag);
     tag.addEventListener('click', tagClickHandler);
     /* END LOOP: for each link */
@@ -177,22 +151,23 @@ addClickListenersToTags();
 function generateAuthors() {
   /* find all authors */
   const post = document.querySelectorAll('.post');
-  console.log(post);
+  // console.log(post);
   /* START LOOP: for every author: */
   for (const author of post) {
-    console.log(author);
+    // console.log(author);
     /* find tags wrapper */
     const postAuthor = author.querySelector('.post-author');
-    console.log(postAuthor);
+    // console.log(postAuthor);
     /* make html variable with empty string */
     postAuthor.innerHTML = '';
     // console.log(postAuthor);
     /* get author from data-author attribute */
     const dataTag = author.getAttribute('data-author');
-    console.log(dataTag);
+    // console.log(dataTag);
     //     /* generate HTML of the link */
-    const tagAuthor = `<a href="#post-author">` + dataTag + `</a>`;
-    console.log(tagAuthor);
+    const tagAuthor =
+      `<a href="#post-author-` + dataTag + `">` + dataTag + `</a>`;
+    // console.log(tagAuthor);
     /* insert HTML of all the links into the tags wrapper */
     postAuthor.insertAdjacentHTML('afterbegin', tagAuthor);
     //  END LOOP
@@ -213,6 +188,42 @@ function addClickLisenersToAuthors() {
   }
 }
 
+addClickLisenersToAuthors();
+
 function authorClickHandler() {
-  console.log('KLIK');
+  // console.log('KLIK');
+  /* prevent default action for this event */
+  event.preventDefault();
+  /* make new constant named "clickedElement" and give it the value of "this" */
+  /* make a new constant "href" and read the attribute "href" of the clicked element */
+  const href = this.getAttribute('href');
+  // console.log(href);
+  /* make a new constant "tag" and extract tag from the "href" constant */
+  const tag = href.replace('#post-author-', '');
+  // console.log(tag);
+  // ----------------------ZBĘDNE----------------
+  /* find all tag links with class active */
+  // const activeTags = document.querySelectorAll(
+  //   '[href^="#tag-' + href + '"] .active'
+  // );
+  // console.log(activeTags);
+  // /* START LOOP: for each active tag link */
+  // for (let active of activeTags) {
+  //   /* remove class active */
+  //   active.classList.remove('active');
+  //   /* END LOOP: for each active tag link */
+  // }
+  // /* find all tag links with "href" attribute equal to the "href" constant */
+  // const similarTags = document.querySelectorAll(href);
+  // console.log(similarTags);
+  // /* START LOOP: for each found tag link */
+  // for (const groupTags of similarTags) {
+  //   /* add class active */
+  //   groupTags.classList.add('active');
+  //   console.log(groupTags);
+  //   /* END LOOP: for each found tag link */
+  // }
+  // -------------------------------------------
+  /* execute function "generateTitleLinks" with article selector as argument */
+  generateTitleLinks('[data-author="' + tag + '"]');
 }
