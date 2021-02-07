@@ -227,3 +227,57 @@ function authorClickHandler() {
   /* execute function "generateTitleLinks" with article selector as argument */
   generateTitleLinks('[data-author="' + tag + '"]');
 }
+
+function generateTagsCloud() {
+  /* [NEW] create a new variable allTags with an empty array */
+  let allTags = [];
+  /* find all articles */
+  const posts = document.querySelectorAll('.post');
+  console.log(posts);
+  /* START LOOP: for every article: */
+  for (const post of posts) {
+    console.log(post);
+    /* find tags wrapper */
+    // const singlePost = post.querySelector('.post');
+    // console.log(singlePost); // !!
+    /* make html variable with empty string */
+    let html = '';
+    let linkHTML;
+    /* get tags from data-tags attribute */
+    const dataTags = post.getAttribute('data-tags');
+    console.log(dataTags);
+    /* split tags into array */
+    const tags = dataTags.split(' ');
+    console.log(tags);
+    /* START LOOP: for each tag */
+    for (const tag of tags) {
+      console.log(tag);
+      /* generate HTML of the link */
+      linkHTML = `<li><a href="#tag-` + tag + `">` + tag + `</a></li>`;
+      console.log(linkHTML);
+      /* add generated code to html variable */
+      html = linkHTML;
+      console.log(html);
+      /* [NEW] check if this link is NOT already in allTags */
+      if (allTags.indexOf(linkHTML) == -1) {
+        console.log(allTags);
+        /* [NEW] add generated code to allTags array */
+        allTags.push(linkHTML);
+        console.log(allTags);
+      }
+      /* END LOOP: for each tag */
+    }
+    /* insert HTML of all the links into the tags wrapper */
+    const tagsWrapper = document.querySelector('.list.tags');
+    console.log(tagsWrapper);
+    tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
+    console.log(tagsWrapper);
+
+    /* END LOOP: for every article: */
+  }
+  /* [NEW] find list of tags in right column */
+  const tagList = document.querySelector('.tags');
+  /* [NEW] add html from allTags to tagList */
+  tagList.innerHTML = allTags.join(' ');
+}
+generateTagsCloud();
