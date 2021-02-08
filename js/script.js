@@ -140,7 +140,7 @@ function addClickListenersToTags() {
   /* START LOOP: for each link */
   for (const tag of tagsSelector) {
     /* add tagClickHandler as event listener for that link*/
-    // console.log(tag);
+    console.log(tag);
     tag.addEventListener('click', tagClickHandler);
     /* END LOOP: for each link */
   }
@@ -341,3 +341,29 @@ function generateTagsCloud() {
   console.log(tagList);
 }
 generateTagsCloud();
+
+function addClickListenersToCloudTags() {
+  /* find all links to tags */
+  const tagsSelector = document.querySelectorAll('.tags a[href^="#"]');
+  /* START LOOP: for each link */
+  for (const tag of tagsSelector) {
+    /* add tagClickHandler as event listener for that link*/
+    console.log(tag);
+    tag.addEventListener('click', cloudTagClickHandler);
+    /* END LOOP: for each link */
+  }
+}
+
+addClickListenersToCloudTags();
+
+function cloudTagClickHandler(event) {
+  // console.log('KLIKKKK');
+  event.preventDefault();
+
+  const href = this.getAttribute('href');
+  // console.log(href);
+
+  const tag = href.replace('#', '');
+  // console.log(tag);
+  generateTitleLinks('[data-tags~="' + tag + '"]');
+}
