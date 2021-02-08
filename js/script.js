@@ -227,16 +227,51 @@ function authorClickHandler() {
   /* execute function "generateTitleLinks" with article selector as argument */
   generateTitleLinks('[data-author="' + tag + '"]');
 }
+function calculateTagsParams(tags) {
+  // Jej zadaniem będzie znalezienie najmniejszej i największej liczby wystąpień. Te dwie liczby mają zostać zwrócone w postaci obiektu, który będzie zawierał dwa klucze: max i min.
+  const stuffEntries = Object.entries(tags);
+  const stuffValues = Object.values(tags);
+  let min = 1;
+  let max = 1;
+  // console.log(stuffEntries);
+  // console.log(stuffValues);
+  for (let i = 0; i < stuffValues.length; i++) {
+    const [key, values] = stuffEntries[i];
+    // console.log(values);
+    if (values < min) {
+      min = values;
+    }
+    if (values > max) {
+      max = values;
+    }
+  }
+  console.log(min);
+  console.log(max);
+  return { min, max };
+}
+const optCloudClassCount = 5;
+const optCloudClassPrefix = 'tag-size-';
+
+function calculateTagClass(count, params) {
+  const normalizedCount = count - params.min;
+  const normalizedMax = params.max - params.min;
+  const percentage = normalizedCount / normalizedMax;
+  const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+  // const classNumber = Math.floor(
+  //   ((count - params.min) / (params.max - params.min)) * optCloudClassCount + 1
+  // );---------------------------------BŁĄD!!!
+  return classNumber;
+}
 
 function generateTagsCloud() {
   /* [NEW] create a new variable allTags with an empty object */
   let allTags = {};
   /* find all articles */
   const posts = document.querySelectorAll('.post');
-  console.log(posts);
+  // console.log(posts);
   /* START LOOP: for every article: */
   for (const post of posts) {
-    console.log(post);
+    // console.log(post);
     /* find tags wrapper */
     // const singlePost = post.querySelector('.post');
     // console.log(singlePost); // !!
@@ -245,48 +280,59 @@ function generateTagsCloud() {
     let linkHTML;
     /* get tags from data-tags attribute */
     const dataTags = post.getAttribute('data-tags');
-    console.log(dataTags);
+    // console.log(dataTags);
     /* split tags into array */
     const tags = dataTags.split(' ');
-    console.log(tags);
+    // console.log(tags);
     /* START LOOP: for each tag */
     for (const tag of tags) {
-      console.log(tag);
+      // console.log(tag);
       /* generate HTML of the link */
       linkHTML = `<li><a href="#tag-` + tag + `">` + tag + `</a></li>`;
-      console.log(linkHTML);
+      // console.log(linkHTML);
       /* add generated code to html variable */
       html = linkHTML;
-      console.log(html);
+      // console.log(html);
       /* [NEW] check if this link is NOT already in allTags */
       if (!allTags[tag]) {
-        console.log(allTags);
+        // console.log(allTags);
         /* [NEW] add generated code to allTags object */
         allTags[tag] = 1;
       } else {
         allTags[tag]++;
-        console.log(allTags);
+        // console.log(allTags);
       }
       /* END LOOP: for each tag */
     }
     /* insert HTML of all the links into the tags wrapper */
     const tagsWrapper = document.querySelector('.list.tags');
-    console.log(tagsWrapper);
+    // console.log(tagsWrapper);
     tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
-    console.log(tagsWrapper);
+    // console.log(tagsWrapper);
 
     /* END LOOP: for every article: */
   }
   /* [NEW] find list of tags in right column */
   const tagList = document.querySelector('.tags');
   /* [NEW] create variable for all links HTML code */
+  const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams);
+
   let allTagsHTML = '';
 
   /* [NEW] START LOOP: for each tag in allTags: */
   for (let tag in allTags) {
     /* [NEW] generate code of a link and add it to allTagsHTML */
     allTagsHTML +=
-      '<a href="#' + tag + '">' + tag + '</a>' + ' (' + allTags[tag] + ') ';
+      '<li><a class="' +
+      optCloudClassPrefix +
+      calculateTagClass(allTags[tag], tagsParams) +
+      '"href="#' +
+      tag +
+      '">' +
+      tag +
+      '</a></li> ';
+    // console.log(allTagsHTML);
   }
   /* [NEW] END LOOP: for each tag in allTags: */
 
