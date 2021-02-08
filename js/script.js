@@ -140,7 +140,7 @@ function addClickListenersToTags() {
   /* START LOOP: for each link */
   for (const tag of tagsSelector) {
     /* add tagClickHandler as event listener for that link*/
-    console.log(tag);
+    // console.log(tag);
     tag.addEventListener('click', tagClickHandler);
     /* END LOOP: for each link */
   }
@@ -245,8 +245,8 @@ function calculateTagsParams(tags) {
       max = values;
     }
   }
-  console.log(min);
-  console.log(max);
+  // console.log(min);
+  // console.log(max);
   return { min, max };
 }
 const optCloudClassCount = 5;
@@ -316,7 +316,7 @@ function generateTagsCloud() {
   const tagList = document.querySelector('.tags');
   /* [NEW] create variable for all links HTML code */
   const tagsParams = calculateTagsParams(allTags);
-  console.log('tagsParams:', tagsParams);
+  // console.log('tagsParams:', tagsParams);
 
   let allTagsHTML = '';
 
@@ -338,7 +338,7 @@ function generateTagsCloud() {
 
   /*[NEW] add HTML from allTagsHTML to tagList */
   tagList.innerHTML = allTagsHTML;
-  console.log(tagList);
+  // console.log(tagList);
 }
 generateTagsCloud();
 
@@ -348,7 +348,7 @@ function addClickListenersToCloudTags() {
   /* START LOOP: for each link */
   for (const tag of tagsSelector) {
     /* add tagClickHandler as event listener for that link*/
-    console.log(tag);
+    // console.log(tag);
     tag.addEventListener('click', cloudTagClickHandler);
     /* END LOOP: for each link */
   }
@@ -364,6 +364,98 @@ function cloudTagClickHandler(event) {
   // console.log(href);
 
   const tag = href.replace('#', '');
-  // console.log(tag);
+  console.log(tag);
   generateTitleLinks('[data-tags~="' + tag + '"]');
+}
+
+function generateAuthorsCloud() {
+  let allAuthors = {};
+  let linkHTML;
+  let allAuthorsHTML;
+  let dataAuthor;
+  const posts = document.querySelectorAll('.post');
+  const tagsWrapper = document.querySelector('.authors');
+  const authorValues = Object.values(allAuthors);
+  console.log(authorValues);
+  for (const post of posts) {
+    dataAuthor = post.getAttribute('data-author');
+    console.log(dataAuthor);
+    let countPost;
+    for (let i = 0; i < authorValues.length; i++) {
+      countPost = authorValues[i];
+      console.log(countPost);
+    }
+    linkHTML =
+      `<li><a href="#tag-author-` +
+      dataAuthor +
+      `">` +
+      dataAuthor +
+      ` ( ` +
+      countPost +
+      ` )` +
+      `</a></li>`;
+    // console.log(linkHTML);
+    if (!allAuthors[dataAuthor]) {
+      allAuthors[dataAuthor] = linkHTML;
+      allAuthors[dataAuthor] = 1;
+    } else {
+      allAuthors[dataAuthor]++;
+      linkHTML = '';
+    }
+    tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
+  }
+  console.log(allAuthors);
+
+  for (let i = 0; i < authorValues.length; i++) {
+    const countPost = authorValues[i];
+    console.log(countPost);
+  }
+  const tagsParams = calculateTagsParams(allAuthors);
+  console.log(tagsParams);
+
+  const postCount = calculateTagClass(allAuthors[dataAuthor], tagsParams);
+  console.log(postCount);
+
+  // for (let tag in allAuthors) {
+  //   allAuthorsHTML +=
+  //     '<li><a href=#tag-author-"' +
+  //     dataAuthor +
+  //     calculateTagClass(allAuthors[dataAuthor], tagsParams) +
+  //     '"href="#' +
+  //     tag +
+  //     '">' +
+  //     tag +
+  //     '</a></li> ';
+  // }
+  // tagsWrapper.innerHTML = allAuthorsHTML;
+}
+generateAuthorsCloud();
+
+function addClickListenersToCloudAuthors() {
+  /* find all links to tags */
+  const tagsSelector = document.querySelectorAll(
+    '.authors a[href^="#tag-author-"]'
+  );
+  console.log(tagsSelector);
+  /* START LOOP: for each link */
+  for (const tag of tagsSelector) {
+    /* add tagClickHandler as event listener for that link*/
+    // console.log(tag);
+    tag.addEventListener('click', cloudAuthorClickHandler);
+    /* END LOOP: for each link */
+  }
+}
+
+addClickListenersToCloudAuthors();
+
+function cloudAuthorClickHandler(event) {
+  // console.log('KLIKKKK');
+  event.preventDefault();
+
+  const href = this.getAttribute('href');
+  // console.log(href);
+
+  const tag = href.replace('#tag-author-', '');
+  // console.log(tag);
+  generateTitleLinks('[data-author="' + tag + '"]');
 }
