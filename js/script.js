@@ -180,9 +180,13 @@ function generateAuthors() {
     //     /* generate HTML of the link */
     const tagAuthor =
       `<a href="#post-author-` + dataTag + `">` + dataTag + `</a>`;
+    console.log(tagAuthor);
+    const linkHTMLData = { id: dataTag, title: dataTag };
+    const tagAuthor1 = templates.articleLink(linkHTMLData);
+    console.log(tagAuthor1);
     // console.log(tagAuthor);
     /* insert HTML of all the links into the tags wrapper */
-    postAuthor.insertAdjacentHTML('afterbegin', tagAuthor);
+    postAuthor.insertAdjacentHTML('afterbegin', tagAuthor1);
     //  END LOOP
   }
 }
@@ -190,8 +194,8 @@ generateAuthors();
 
 function addClickLisenersToAuthors() {
   /* find all links to tags */
-  const authorSelector = document.querySelectorAll(' a[href^="#post-author"]');
-  // console.log(authorSelector);
+  const authorSelector = document.querySelectorAll('.post-author a[href^="#"]');
+  console.log(authorSelector);
   /* START LOOP: for each link */
   for (const author of authorSelector) {
     /* add tagClickHandler as event listener for that link */
@@ -212,7 +216,7 @@ function authorClickHandler() {
   const href = this.getAttribute('href');
   // console.log(href);
   /* make a new constant "tag" and extract tag from the "href" constant */
-  const tag = href.replace('#post-author-', '');
+  const tag = href.replace('#', '');
   // console.log(tag);
   // ----------------------ZBĘDNE----------------
   /* find all tag links with class active */
