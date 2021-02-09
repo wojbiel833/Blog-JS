@@ -7,6 +7,9 @@ const templates = {
   tagCloudLink: Handlebars.compile(
     document.querySelector('#template-tag-cloud-link').innerHTML
   ),
+  authorCloudLink: Handlebars.compile(
+    document.querySelector('#template-authors-cloud-link').innerHTML
+  ),
 };
 // const optArticleSelector = '.post',
 //   optTitleSelector = '.post-title',
@@ -198,7 +201,7 @@ generateAuthors();
 function addClickLisenersToAuthors() {
   /* find all links to tags */
   const authorSelector = document.querySelectorAll('.post-author a[href^="#"]');
-  console.log(authorSelector);
+  // console.log(authorSelector);
   /* START LOOP: for each link */
   for (const author of authorSelector) {
     /* add tagClickHandler as event listener for that link */
@@ -308,7 +311,7 @@ function generateTagsCloud() {
     for (const tag of tags) {
       // console.log(tag);
       /* generate HTML of the link */
-      linkHTML = `<li><a href="#tag-` + tag + `">` + tag + `</a></li>`;
+      // linkHTML = `<li><a href="#tag-` + tag + `">` + tag + `</a></li>`;
       // console.log(linkHTML);
       /* add generated code to html variable */
       html = linkHTML;
@@ -327,7 +330,7 @@ function generateTagsCloud() {
     /* insert HTML of all the links into the tags wrapper */
     const tagsWrapper = document.querySelector('.list.tags');
     // console.log(tagsWrapper);
-    tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
+    // tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
     // console.log(tagsWrapper);
 
     /* END LOOP: for every article: */
@@ -364,7 +367,7 @@ function generateTagsCloud() {
   /*[NEW] add HTML from allTagsHTML to tagList */
   // tagList.innerHTML = allTagsHTML;
   tagList.innerHTML = templates.tagCloudLink(allTagsData);
-  // console.log(allTagsData);
+  console.log(allTagsData);
   // console.log(allTagsHTML);
   // console.log(tagList);
 }
@@ -373,7 +376,7 @@ generateTagsCloud();
 function addClickListenersToCloudTags() {
   /* find all links to tags */
   const tagsSelector = document.querySelectorAll('.tags [href^="#"]');
-  console.log(tagsSelector);
+  // console.log(tagsSelector);
   /* START LOOP: for each link */
   for (const tag of tagsSelector) {
     /* add tagClickHandler as event listener for that link*/
@@ -399,7 +402,8 @@ function cloudTagClickHandler(event) {
 
 function generateAuthorsCloud() {
   let allAuthors = {};
-  console.log(allAuthors);
+  const allAuthorsData = { tags: [] };
+  // console.log(allAuthors);
   let linkHTML;
   let allAuthorsHTML;
   let dataAuthor;
@@ -407,41 +411,54 @@ function generateAuthorsCloud() {
   const posts = document.querySelectorAll('.post');
   const tagsWrapper = document.querySelector('.authors');
   const countPost = [];
-  console.log(countPost);
+  // console.log(countPost);
 
   for (const post of posts) {
     dataAuthor = post.getAttribute('data-author');
     // console.log(dataAuthor);
 
-    linkHTML =
-      `<li><a href="#tag-author-` +
-      dataAuthor +
-      `">` +
-      dataAuthor +
-      ` ( ` +
-      `m` +
-      ` )` +
-      `</a></li>`;
+    // linkHTML =
+    //   `<li><a href="#tag-author-` +
+    //   dataAuthor +
+    //   `">` +
+    //   dataAuthor +
+    //   ` ( ` +
+    //   `m` +
+    //   ` )` +
+    //   `</a></li>`;
     // console.log(linkHTML);
-    if (!allAuthors[dataAuthor]) {
-      allAuthors[dataAuthor] = linkHTML;
-      allAuthors[dataAuthor] = 1;
+    allAuthorsData.tags.push({
+      name: dataAuthor,
+    });
+    // if (!allAuthors[dataAuthor]) {
+    //   allAuthors[dataAuthor] = linkHTML;
+    //   allAuthors[dataAuthor] = 1;
+    // } else {
+    //   allAuthors[dataAuthor]++;
+    //   linkHTML = '';
+    // }
+    if (!allAuthorsData[dataAuthor]) {
+      allAuthorsData[dataAuthor] = allAuthorsData;
+      allAuthorsData[dataAuthor] = 1;
     } else {
-      allAuthors[dataAuthor]++;
-      linkHTML = '';
+      allAuthorsData[dataAuthor]++;
+      // allAuthorsData = '';
     }
-    tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
+    // tagsWrapper.insertAdjacentHTML('beforeend', linkHTML);
+    tagsWrapper.innerHTML = templates.authorCloudLink(allAuthorsData);
   }
+  console.log(tagsWrapper);
+  console.log(allAuthorsData);
 
   // for (let i = 0; i < authorValues.length; i++) {
   //   const countPost = authorValues[i];
   //   console.log(countPost);
   // }
   const tagsParams = calculateTagsParams(allAuthors);
-  console.log(tagsParams);
+  // console.log(tagsParams);
 
   const postCount = calculateTagClass(allAuthors[dataAuthor], tagsParams);
-  console.log(postCount);
+  // console.log(postCount);
 
   // for (let tag in allAuthors) {
   //   allAuthorsHTML +=
