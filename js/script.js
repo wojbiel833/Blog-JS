@@ -4,6 +4,9 @@ const templates = {
   articleLink: Handlebars.compile(
     document.querySelector('#template-article-link').innerHTML
   ),
+  tagCloudLink: Handlebars.compile(
+    document.querySelector('#template-tag-cloud-link').innerHTML
+  ),
 };
 // const optArticleSelector = '.post',
 //   optTitleSelector = '.post-title',
@@ -180,10 +183,10 @@ function generateAuthors() {
     //     /* generate HTML of the link */
     const tagAuthor =
       `<a href="#post-author-` + dataTag + `">` + dataTag + `</a>`;
-    console.log(tagAuthor);
+    // console.log(tagAuthor);
     const linkHTMLData = { id: dataTag, title: dataTag };
     const tagAuthor1 = templates.articleLink(linkHTMLData);
-    console.log(tagAuthor1);
+    // console.log(tagAuthor1);
     // console.log(tagAuthor);
     /* insert HTML of all the links into the tags wrapper */
     postAuthor.insertAdjacentHTML('afterbegin', tagAuthor1);
@@ -336,32 +339,41 @@ function generateTagsCloud() {
   // console.log('tagsParams:', tagsParams);
 
   let allTagsHTML = '';
+  const allTagsData = { tags: [] };
 
   /* [NEW] START LOOP: for each tag in allTags: */
   for (let tag in allTags) {
     /* [NEW] generate code of a link and add it to allTagsHTML */
-    allTagsHTML +=
-      '<li><a class="' +
-      optCloudClassPrefix +
-      calculateTagClass(allTags[tag], tagsParams) +
-      '"href="#' +
-      tag +
-      '">' +
-      tag +
-      '</a></li> ';
-    // console.log(allTagsHTML);
+    // allTagsHTML +=
+    //   '<li><a class="' +
+    //   optCloudClassPrefix +
+    //   calculateTagClass(allTags[tag], tagsParams) +
+    //   '"href="#' +
+    //   tag +
+    //   '">' +
+    //   tag +
+    //   '</a></li> ';
+    allTagsData.tags.push({
+      tag: tag,
+      count: allTags[tag],
+      className: calculateTagClass(allTags[tag], tagsParams),
+    });
   }
   /* [NEW] END LOOP: for each tag in allTags: */
 
   /*[NEW] add HTML from allTagsHTML to tagList */
-  tagList.innerHTML = allTagsHTML;
+  // tagList.innerHTML = allTagsHTML;
+  tagList.innerHTML = templates.tagCloudLink(allTagsData);
+  // console.log(allTagsData);
+  // console.log(allTagsHTML);
   // console.log(tagList);
 }
 generateTagsCloud();
 
 function addClickListenersToCloudTags() {
   /* find all links to tags */
-  const tagsSelector = document.querySelectorAll('.tags a[href^="#"]');
+  const tagsSelector = document.querySelectorAll('.tags [href^="#"]');
+  console.log(tagsSelector);
   /* START LOOP: for each link */
   for (const tag of tagsSelector) {
     /* add tagClickHandler as event listener for that link*/
@@ -374,7 +386,7 @@ function addClickListenersToCloudTags() {
 addClickListenersToCloudTags();
 
 function cloudTagClickHandler(event) {
-  // console.log('KLIKKKK');
+  console.log('KLIKKKK');
   event.preventDefault();
 
   const href = this.getAttribute('href');
