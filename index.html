@@ -397,10 +397,10 @@
       {{/each}}
     </script>
     <script id="template-authors-cloud-link" type="text/x-handlebars-template">
-      {{#each tags}}
+      {{#each authors}}
         <li>
-          <a href='#tag-author-{{name}}'>
-            {{name}}( 'm' )
+          <a href='#author-{{this}}'>
+            {{this}}
           </a>
         </li>
       {{/each}}
