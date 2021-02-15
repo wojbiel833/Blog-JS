@@ -479,13 +479,15 @@ function generateAuthorsCloud() {
   const posts = document.querySelectorAll('.post');
   const tagsWrapper = document.querySelector('.authors');
 
-  const allAuthorsData = [];
+  const allAuthorsData = {};
 
   for (const post of posts) {
     dataAuthor = post.getAttribute('data-author');
 
-    if (!allAuthorsData.includes(dataAuthor)) {
-      allAuthorsData.push(dataAuthor);
+    if (!allAuthorsData[dataAuthor]) {
+      allAuthorsData[dataAuthor] = 1;
+    } else {
+      allAuthorsData[dataAuthor]++;
     }
   }
 

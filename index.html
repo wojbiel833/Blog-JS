@@ -391,7 +391,7 @@
       {{#each tags}}
         <li>
           <a class='tag-size-{{className}}' href='#{{tag}}'>
-            {{tag}}({{count}})
+            {{tag}}
           </a>
         </li>
       {{/each}}
@@ -399,8 +399,8 @@
     <script id="template-authors-cloud-link" type="text/x-handlebars-template">
       {{#each authors}}
         <li>
-          <a href='#author-{{this}}'>
-            {{this}}
+          <a href='#author-{{@key}}'>
+            {{@key}}({{this}})
           </a>
         </li>
       {{/each}}
